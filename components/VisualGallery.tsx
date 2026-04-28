@@ -10,8 +10,12 @@ interface VisualGalleryProps {
 
 export function VisualGallery({ images }: VisualGalleryProps) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [showAll, setShowAll] = useState(false);
 
   if (!images.length) return null;
+
+  const initialCount = 6;
+  const displayedImages = showAll ? images : images.slice(0, initialCount);
 
   return (
     <section className="py-20 md:py-32 bg-white">
@@ -29,7 +33,7 @@ export function VisualGallery({ images }: VisualGalleryProps) {
         </div>
 
         <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-          {images.map((src, index) => {
+          {displayedImages.map((src, index) => {
             // Clean up filename for alt text
             const altText = src
               .split("/")
@@ -64,6 +68,17 @@ export function VisualGallery({ images }: VisualGalleryProps) {
             );
           })}
         </div>
+
+        {!showAll && images.length > initialCount && (
+          <div className="mt-16 text-center">
+            <button 
+              onClick={() => setShowAll(true)}
+              className="inline-flex items-center justify-center gap-3 min-h-[3.5rem] px-10 py-4 rounded-full text-[0.82rem] font-black tracking-[0.15em] uppercase border-2 border-[#001736] text-[#001736] hover:bg-[#001736] hover:text-white transition-all shadow-lg hover:shadow-xl"
+            >
+              See More Images
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Lightbox */}
