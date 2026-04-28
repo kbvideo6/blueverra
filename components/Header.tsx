@@ -25,18 +25,17 @@ export function Header() {
       <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/75 border-b border-blue-950/10">
         <div className="container mx-auto px-4 max-w-[1180px]">
           <div className="flex items-center justify-between min-h-[5rem] gap-4">
-            <Link href="/" className="inline-flex items-center gap-3">
-              <Image 
-                src="/logos/Sea_Nova_Project_Logo-removebg-preview.png" 
-                alt="seaNOVA Logo" 
-                width={46} 
-                height={46} 
-                className="object-contain flex-none"
-              />
-              <div className="flex flex-col min-w-0">
-                <span className="font-serif text-[1.4rem] leading-none tracking-tight text-[#001736] m-0">Blueverra</span>
-                <span className="text-[0.76rem] tracking-[0.2em] uppercase text-[#4d5b6a] mt-1 space-x-1 whitespace-nowrap"><span>by</span> <span>seaNOVA</span></span>
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="relative w-[56px] h-[56px] flex-none bg-[#001736]/5 rounded-xl p-1 overflow-hidden transition-transform group-hover:scale-105">
+                <Image 
+                  src="/logos/Geothermal-removebg-preview.png" 
+                  alt="Blueverra Logo" 
+                  fill
+                  className="object-contain"
+                  priority
+                />
               </div>
+              <span className="font-serif text-[1.6rem] leading-none tracking-tight text-[#001736] m-0">Blueverra</span>
             </Link>
 
             {/* Desktop Nav */}

@@ -15,8 +15,12 @@ const newsreader = Newsreader({
 });
 
 export const metadata: Metadata = {
-  title: "Blueverra by seaNOVA",
-  description: "An educational initiative by seaNOVA dedicated to raising awareness about our environment.",
+  title: "Blueverra | Protecting the Ocean's Future",
+  description: "An educational initiative dedicated to raising awareness about our environment and technological footprint.",
+  icons: {
+    icon: "/logos/Geothermal-removebg-preview.png",
+    apple: "/logos/Geothermal-removebg-preview.png",
+  }
 };
 
 export default function RootLayout({

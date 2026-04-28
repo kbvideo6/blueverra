@@ -42,14 +42,14 @@ export default function HomeClient({ unusedImages }: HomeClientProps) {
             Protect What Protects Us
           </span>
 
-          <h1 className="font-serif text-[3.2rem] md:text-[5rem] lg:text-[6rem] xl:text-[7rem] leading-[0.95] tracking-[-0.03em] max-w-5xl text-[#001736] mb-6">
+          <h1 className="font-serif text-[3.2rem] md:text-[5rem] lg:text-[6rem] xl:text-[7rem] leading-[0.95] tracking-[-0.03em] max-w-5xl text-[#001736] mb-6 drop-shadow-sm md:drop-shadow-none">
             The Ocean is Silent. <br className="hidden md:block"/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#001736] via-[#3b6934] to-[#5fa8d3]">
               Her Data Speak Volumes.
             </span>
           </h1>
           
-          <p className="text-[1.1rem] md:text-[1.3rem] leading-relaxed text-[#4d5b6a] max-w-2xl mb-8">
+          <p className="text-[1.05rem] md:text-[1.3rem] leading-relaxed text-[#001736] md:text-[#4d5b6a] max-w-2xl mb-10 px-6 py-5 rounded-[2rem] bg-white/40 backdrop-blur-md border border-white/20 shadow-sm md:bg-transparent md:backdrop-blur-none md:border-none md:shadow-none md:px-0 md:py-0 transition-all">
             Your platform is dedicated to raising awareness about environmental protection, responsible consumption, and waste management. It focuses on educating people about critical yet often ignored issues like electronic waste and sea nurdles, while encouraging individuals to adopt sustainable habits.
           </p>
 
@@ -84,7 +84,7 @@ export default function HomeClient({ unusedImages }: HomeClientProps) {
                 Beyond Awareness: Inspiring Measurable Action.
             </h2>
             <p className="text-[1.1rem] md:text-[1.3rem] leading-relaxed text-white/80 max-w-3xl mx-auto mb-16">
-                This initiative is not just about spreading the word—it is about creating <strong>real behavioral change</strong>. From tracing electronic waste routes (Eco Trace) to showing proactive gratitude toward nature (SeaNova), our community is building a cleaner, safer, and remarkably more sustainable world.
+                This initiative is not just about spreading the word—it is about creating <strong>real behavioral change</strong>. From tracing electronic waste routes (Eco Trace) to showing proactive gratitude toward nature (Blueverra), our community is building a cleaner, safer, and remarkably more sustainable world.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
@@ -291,7 +291,7 @@ export default function HomeClient({ unusedImages }: HomeClientProps) {
 
         <div className="container mx-auto px-4 max-w-[1180px] relative z-10">
           <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-md text-[#5fa8d3] text-[0.78rem] font-extrabold tracking-[0.14em] uppercase mb-6 shadow-sm">
-            <Users size={14} /> The seaNOVA Community
+            <Users size={14} /> The Blueverra Community
           </span>
           <h2 className="font-serif text-[2.5rem] md:text-[4rem] leading-[1.05] tracking-[-0.02em] text-white mb-8 max-w-3xl mx-auto">
             Change Begins With Awareness

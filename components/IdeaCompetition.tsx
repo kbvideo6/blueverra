@@ -74,6 +74,12 @@ export function IdeaCompetition() {
     }, 1200);
   };
 
+  const [showAdminView, setShowAdminView] = useState(false);
+  const [adminPassword, setAdminPassword] = useState("");
+  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [authError, setAuthError] = useState(false);
+  const correctPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD;
+
   return (
     <section id="competition" className="py-24 md:py-32 bg-[#001736] text-white relative overflow-hidden">
       {/* Background Decor */}
@@ -83,7 +89,7 @@ export function IdeaCompetition() {
       <div className="container mx-auto px-4 max-w-[1180px] relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-md text-[#5fa8d3] text-[0.78rem] font-extrabold tracking-[0.14em] uppercase mb-6 shadow-sm">
-            <Trophy size={14} /> The seaNOVA Innovation Challenge
+            <Trophy size={14} /> The Blueverra Innovation Challenge
           </span>
           <h2 className="font-serif text-[2.5rem] md:text-[4rem] leading-[1.05] tracking-[-0.02em] mb-6">
             Share Your Vision. <br className="hidden md:block" /> Save Our Oceans.
@@ -103,7 +109,7 @@ export function IdeaCompetition() {
                      <Lightbulb size={32} />
                   </div>
                   <h3 className="text-2xl font-serif font-bold text-[#001736] mb-2">Idea Submitted!</h3>
-                  <p className="text-[#4d5b6a] mb-6">Thank you for contributing to the seaNOVA challenge. We are reviewing your concept.</p>
+                  <p className="text-[#4d5b6a] mb-6">Thank you for contributing to the Blueverra challenge. We are reviewing your concept.</p>
                   <button onClick={() => setShowSuccess(false)} className="text-[0.8rem] font-extrabold tracking-wider uppercase text-[#5fa8d3] hover:text-[#001736] transition-colors flex items-center gap-2">
                      <RefreshCcw size={14}/> Submit Another
                   </button>
@@ -165,7 +171,7 @@ export function IdeaCompetition() {
                  />
                  <label htmlFor="isPrivate" className="text-sm text-[#4d5b6a] cursor-pointer cursor-select">
                    <strong className="block text-[#001736] mb-0.5">Keep this idea private</strong>
-                   Check this to hide your idea from the public wall. It will only be visible to seaNOVA admins judging the competition.
+                   Check this to hide your idea from the public wall. It will only be visible to Blueverra admins judging the competition.
                  </label>
               </div>
 
@@ -179,23 +185,37 @@ export function IdeaCompetition() {
             </form>
           </div>
 
-          {/* Public Wall */}
+          {/* Wall Section */}
           <div className="lg:col-span-3">
-             <div className="flex items-center justify-between mb-8 pl-2">
+             <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 pl-2 gap-4">
                 <h3 className="text-2xl md:text-3xl font-serif font-bold text-white">Community Wall</h3>
-                <span className="text-white/60 text-sm bg-white/10 px-3 py-1 rounded-full">{ideas.filter(i => !i.isPrivate).length} Ideas Visible</span>
+                
+                <div className="flex items-center gap-2 bg-white/5 p-1 rounded-full border border-white/10 self-start sm:self-center">
+                  <button 
+                    onClick={() => setShowAdminView(false)}
+                    className={`px-4 py-1.5 rounded-full text-[0.7rem] font-black uppercase tracking-wider transition-all ${!showAdminView ? 'bg-[#5fa8d3] text-[#001736]' : 'text-white/60 hover:text-white'}`}
+                  >
+                    Public
+                  </button>
+                  <button 
+                    onClick={() => setShowAdminView(true)}
+                    className={`px-4 py-1.5 rounded-full text-[0.7rem] font-black uppercase tracking-wider transition-all flex items-center gap-1.5 ${showAdminView ? 'bg-[#5fa8d3] text-[#001736]' : 'text-white/60 hover:text-white'}`}
+                  >
+                    <Lock size={12} /> Admin
+                  </button>
+                </div>
              </div>
              
              <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
-                {ideas.filter(idea => (!idea.isPrivate)).length === 0 ? (
-                  <div className="text-center py-12 bg-white/5 rounded-3xl border border-white/10">
-                     <p className="text-white/60">No public ideas submitted yet. Be the first!</p>
-                  </div>
-                ) : (
-                  ideas.map((idea) => {
-                     if (idea.isPrivate) return null; // Safety check
-                     return (
-                      <div key={idea.id} className="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-8 hover:bg-white/10 transition-colors">
+                {!showAdminView ? (
+                  // Public View
+                  ideas.filter(idea => !idea.isPrivate).length === 0 ? (
+                    <div className="text-center py-12 bg-white/5 rounded-3xl border border-white/10">
+                       <p className="text-white/60">No public ideas submitted yet. Be the first!</p>
+                    </div>
+                  ) : (
+                    ideas.filter(idea => !idea.isPrivate).map((idea) => (
+                      <div key={idea.id} className="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-8 hover:bg-white/10 transition-colors animate-in fade-in slide-in-from-bottom-2 duration-500">
                         <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
                            <h4 className="text-xl font-bold text-white">{idea.title}</h4>
                            <span className="text-xs font-bold uppercase tracking-wider text-[#5fa8d3] bg-[#5fa8d3]/10 px-3 py-1 rounded-full">
@@ -208,32 +228,96 @@ export function IdeaCompetition() {
                              {idea.name.charAt(0)}
                            </div>
                            Submitted by <strong className="text-white/80">{idea.name}</strong>
-                           {!idea.isPrivate && <span className="ml-auto inline-flex items-center gap-1 text-xs"><Eye size={14}/> Public</span>}
+                           <span className="ml-auto inline-flex items-center gap-1 text-xs"><Eye size={14}/> Public</span>
                         </div>
                       </div>
-                     );
-                  })
-                )}
+                    ))
+                  )
+                ) : !isUnlocked ? (
+                  // Password Protection Screen
+                  <div className="bg-[#000d20]/50 border border-white/10 rounded-3xl p-10 text-center animate-in zoom-in-95 duration-500">
+                    <div className="w-16 h-16 bg-[#5fa8d3]/10 text-[#5fa8d3] rounded-full flex items-center justify-center mx-auto mb-6">
+                      <Lock size={32} />
+                    </div>
+                    <h4 className="text-xl font-bold text-white mb-2">Restricted Access</h4>
+                    <p className="text-white/60 text-sm mb-8">Please enter the administrator password to view private submissions.</p>
+                    <form 
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        if (adminPassword === correctPassword) {
+                          setIsUnlocked(true);
+                          setAuthError(false);
+                        } else {
+                          setAuthError(true);
+                        }
+                      }}
+                      className="max-w-xs mx-auto space-y-4"
+                    >
+                      <input 
+                        type="password" 
+                        placeholder="Enter Password"
+                        value={adminPassword}
+                        onChange={(e) => {
+                          setAdminPassword(e.target.value);
+                          if (authError) setAuthError(false);
+                        }}
+                        className={`w-full px-4 py-3 rounded-xl bg-white/5 border ${authError ? 'border-red-500/50' : 'border-white/10'} text-white focus:outline-none focus:ring-2 focus:ring-[#5fa8d3] text-center transition-colors`}
+                      />
+                      <button type="submit" className="w-full py-3 rounded-xl bg-[#5fa8d3] text-[#001736] font-bold text-[0.7rem] uppercase tracking-[0.15em] hover:bg-[#5fa8d3]/90 transition-all">
+                        Unlock Wall
+                      </button>
 
-                {/* Admin Simulation Section - In a real app this is hidden entirely */}
-                <div className="mt-8 border-t border-white/20 pt-8 border-dashed">
-                  <div className="flex items-center gap-2 mb-4 text-[#5fa8d3]">
-                    <Lock size={16} /> 
-                    <span className="text-sm font-bold uppercase tracking-wider">Admin View Simulation (Private Ideas)</span>
-                  </div>
-                  {ideas.filter(idea => idea.isPrivate).length === 0 ? (
-                    <p className="text-white/40 text-sm">No private ideas submitted currently.</p>
-                  ) : (
-                     ideas.filter(idea => idea.isPrivate).map(idea => (
-                        <div key={idea.id} className="bg-[#000d20]/50 border border-[#5fa8d3]/30 rounded-2xl p-5 mb-4 relative overflow-hidden">
-                           <div className="absolute top-0 right-0 w-16 h-16 bg-[#5fa8d3]/10 rounded-bl-full flex items-start justify-end p-3"><Lock size={14} className="text-[#5fa8d3]"/></div>
-                           <h4 className="text-lg font-bold text-white mb-2">{idea.title}</h4>
-                           <p className="text-white/60 text-sm mb-4">{idea.description}</p>
-                           <p className="text-xs text-[#5fa8d3]">By {idea.name}</p>
+                      {authError && (
+                        <div className="mt-4 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-[0.8rem] animate-in fade-in zoom-in-95">
+                          <p className="font-bold mb-1">Access Denied: Incorrect Password</p>
+                          <p className="opacity-80">Please contact the developer for access: <a href="https://artstudio-portfolio.netlify.app/" target="_blank" rel="noopener noreferrer" className="text-white underline underline-offset-4 decoration-[#5fa8d3]/30 hover:text-[#5fa8d3] transition-all">chathu.</a></p>
                         </div>
-                     ))
-                  )}
-                </div>
+                      )}
+                    </form>
+                  </div>
+                ) : (
+                  // Admin View (Private Ideas)
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between mb-4 px-2">
+                      <div className="flex items-center gap-2 text-[#5fa8d3]">
+                        <Lock size={16} /> 
+                        <span className="text-xs font-black uppercase tracking-widest">Admin Access: Private Concept Submissions</span>
+                      </div>
+                      <button 
+                        onClick={() => {setIsUnlocked(false); setAdminPassword("");}}
+                        className="text-[0.65rem] font-bold uppercase tracking-widest text-white/40 hover:text-white/80 transition-colors"
+                      >
+                        Lock Wall
+                      </button>
+                    </div>
+                    {ideas.filter(idea => idea.isPrivate).length === 0 ? (
+                      <div className="text-center py-12 bg-[#000d20]/50 rounded-3xl border border-[#5fa8d3]/20 border-dashed">
+                        <p className="text-white/40 text-sm">No private ideas submitted currently.</p>
+                      </div>
+                    ) : (
+                       ideas.filter(idea => idea.isPrivate).map(idea => (
+                          <div key={idea.id} className="bg-[#000d20]/50 border border-[#5fa8d3]/30 rounded-3xl p-6 md:p-8 relative overflow-hidden animate-in fade-in zoom-in-95 duration-500">
+                             <div className="absolute top-0 right-0 w-20 h-20 bg-[#5fa8d3]/10 rounded-bl-full flex items-start justify-end p-4">
+                               <Lock size={18} className="text-[#5fa8d3]"/>
+                             </div>
+                             <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
+                               <h4 className="text-xl font-bold text-white pr-10">{idea.title}</h4>
+                               <span className="text-xs font-bold uppercase tracking-wider text-[#5fa8d3] border border-[#5fa8d3]/30 px-3 py-1 rounded-full">
+                                  {idea.date}
+                               </span>
+                             </div>
+                             <p className="text-white/60 leading-relaxed mb-6">{idea.description}</p>
+                             <div className="flex items-center gap-2 text-sm text-[#5fa8d3]/60 border-t border-white/5 pt-4 mt-4">
+                               <div className="w-6 h-6 rounded-full bg-[#5fa8d3] flex items-center justify-center text-[#001736] font-bold text-xs">
+                                 {idea.name.charAt(0)}
+                               </div>
+                               Confidential Submission by <strong className="text-[#5fa8d3]">{idea.name}</strong>
+                             </div>
+                          </div>
+                       ))
+                    )}
+                  </div>
+                )}
              </div>
           </div>
         </div>

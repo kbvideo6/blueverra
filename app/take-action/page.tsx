@@ -29,14 +29,14 @@ export default function TakeAction() {
             <Lightbulb size={14} /> Meaningful impact
           </span>
 
-          <h1 className="font-serif text-[3.2rem] md:text-[5rem] lg:text-[7rem] leading-[0.95] tracking-[-0.03em] max-w-5xl text-[#001736] mb-6">
+          <h1 className="font-serif text-[3.2rem] md:text-[5rem] lg:text-[7rem] leading-[0.95] tracking-[-0.03em] max-w-5xl text-[#001736] mb-6 drop-shadow-sm md:drop-shadow-none">
             Small Actions, <br className="hidden md:block"/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#001736] via-[#3b6934] to-[#5fa8d3]">
               Collective Gain
             </span>
           </h1>
           
-          <p className="text-[1.1rem] md:text-[1.3rem] leading-relaxed text-[#4d5b6a] max-w-2xl mb-12">
+          <p className="text-[1.05rem] md:text-[1.3rem] leading-relaxed text-[#001736] md:text-[#4d5b6a] max-w-2xl mb-12 px-6 py-5 rounded-[2rem] bg-white/40 backdrop-blur-md border border-white/20 shadow-sm md:bg-transparent md:backdrop-blur-none md:border-none md:shadow-none md:px-0 md:py-0 transition-all">
             Awareness is only the first step. True preservation requires consistent, measurable action. Learn the facts, make practical changes at home, and advocate for sustainable policies with our community.
           </p>
 
@@ -121,7 +121,7 @@ export default function TakeAction() {
                  Youth & Action
                </span>
                <h2 className="font-serif text-[2.5rem] md:text-[3.5rem] leading-[1.05] tracking-[-0.02em] text-[#001736]">
-                 Join a local seaNOVA team today.
+                 Join a local Blueverra team today.
                </h2>
                <p className="text-[1.1rem] md:text-[1.2rem] leading-relaxed text-[#4d5b6a] mb-6">
                  Meaningful progress happens locally. By joining forces with volunteers in your area, you amplify your impact and build resilient communities capable of sustained environmental stewardship. <br/><br/>

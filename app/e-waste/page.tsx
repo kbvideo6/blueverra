@@ -1,4 +1,5 @@
 "use client";
+import { Metadata } from "next";
 
 import React, { useState } from "react";
 import Image from "next/image";
@@ -28,14 +29,14 @@ export default function EWaste() {
             <ShieldAlert size={14} /> Technology Lifecycle
           </span>
 
-          <h1 className="font-serif text-[3.2rem] md:text-[5rem] lg:text-[7rem] leading-[0.95] tracking-[-0.03em] max-w-5xl text-[#001736] mb-6">
+          <h1 className="font-serif text-[3.2rem] md:text-[5rem] lg:text-[7rem] leading-[0.95] tracking-[-0.03em] max-w-5xl text-[#001736] mb-6 drop-shadow-sm md:drop-shadow-none">
             The Silent Cost of <br className="hidden md:block"/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#001736] via-[#3b6934] to-[#5fa8d3]">
               E-Waste
             </span>
           </h1>
           
-          <p className="text-[1.1rem] md:text-[1.3rem] leading-relaxed text-[#4d5b6a] max-w-2xl mb-12">
+          <p className="text-[1.05rem] md:text-[1.3rem] leading-relaxed text-[#001736] md:text-[#4d5b6a] max-w-2xl mb-12 px-6 py-5 rounded-[2rem] bg-white/40 backdrop-blur-md border border-white/20 shadow-sm md:bg-transparent md:backdrop-blur-none md:border-none md:shadow-none md:px-0 md:py-0 transition-all">
             Phones, batteries, laptops, and circuit boards are useful for years, then dangerous when discarded carelessly. The goal here is simple: reduce unnecessary buying, repair first, and recycle correctly.
           </p>
 
