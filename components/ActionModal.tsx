@@ -30,19 +30,57 @@ export function ActionModal({ isOpen, onClose }: ActionModalProps) {
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate submission
-    setTimeout(() => {
+    
+    const newIdea = {
+      id: Math.random().toString(36).substr(2, 9),
+      name: formData.name,
+      title: formData.title,
+      description: formData.description,
+      isPrivate: false, // Default for simple modal
+      date: new Date().toLocaleDateString(),
+    };
+
+    try {
+      // 1. Try to save to API
+      await fetch('/api/ideas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newIdea),
+      });
+
+      // 2. Save to LocalStorage for immediate feedback on the wall
+      const saved = localStorage.getItem("blueverra_ideas");
+      const currentIdeas = saved ? JSON.parse(saved) : [];
+      localStorage.setItem("blueverra_ideas", JSON.stringify([newIdea, ...currentIdeas]));
+
       setIsSubmitting(false);
       setIsSuccess(true);
       setTimeout(() => {
         setIsSuccess(false);
         onClose();
         setFormData({ name: "", title: "", description: "" });
+        // Refresh the page or trigger a re-fetch if possible
+        window.location.reload(); // Simple way to refresh the wall
       }, 2000);
-    }, 1500);
+    } catch (error) {
+      console.error("Failed to save idea:", error);
+      // Fallback to local only
+      const saved = localStorage.getItem("blueverra_ideas");
+      const currentIdeas = saved ? JSON.parse(saved) : [];
+      localStorage.setItem("blueverra_ideas", JSON.stringify([newIdea, ...currentIdeas]));
+
+      setIsSubmitting(false);
+      setIsSuccess(true);
+      setTimeout(() => {
+        setIsSuccess(false);
+        onClose();
+        setFormData({ name: "", title: "", description: "" });
+        window.location.reload();
+      }, 2000);
+    }
   };
 
   return (

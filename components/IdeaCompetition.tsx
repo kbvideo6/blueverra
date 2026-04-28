@@ -49,29 +49,86 @@ export function IdeaCompetition() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Fetch ideas from API or LocalStorage
+  React.useEffect(() => {
+    const fetchIdeas = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch('/api/ideas');
+        if (response.ok) {
+          const data = await response.json();
+          // Map database fields to component fields if necessary
+          const formattedData = data.map((item: any) => ({
+            id: item.id,
+            name: item.name,
+            title: item.title,
+            description: item.description,
+            isPrivate: item.is_private,
+            date: new Date(item.created_at).toLocaleDateString(),
+          }));
+          setIdeas(formattedData);
+        } else {
+          // Fallback to local storage if API fails/not configured
+          const saved = localStorage.getItem("blueverra_ideas");
+          if (saved) setIdeas(JSON.parse(saved));
+        }
+      } catch (error) {
+        console.error("Failed to fetch ideas:", error);
+        const saved = localStorage.getItem("blueverra_ideas");
+        if (saved) setIdeas(JSON.parse(saved));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchIdeas();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate network request
-    setTimeout(() => {
-      const newIdea: Idea = {
-        id: Math.random().toString(36).substr(2, 9),
-        name: formData.name,
-        title: formData.title,
-        description: formData.description,
-        isPrivate: formData.isPrivate,
-        date: new Date().toLocaleDateString(),
-      };
+    const newIdea: Idea = {
+      id: Math.random().toString(36).substr(2, 9),
+      name: formData.name,
+      title: formData.title,
+      description: formData.description,
+      isPrivate: formData.isPrivate,
+      date: new Date().toLocaleDateString(),
+    };
 
-      setIdeas([newIdea, ...ideas]);
+    try {
+      // 1. Try to save to API
+      const response = await fetch('/api/ideas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newIdea),
+      });
+
+      // 2. Always update local state and localStorage for immediate feedback
+      const updatedIdeas = [newIdea, ...ideas];
+      setIdeas(updatedIdeas);
+      localStorage.setItem("blueverra_ideas", JSON.stringify(updatedIdeas));
+
       setFormData({ name: "", title: "", description: "", isPrivate: false });
       setIsSubmitting(false);
       setShowSuccess(true);
       
       setTimeout(() => setShowSuccess(false), 5000);
-    }, 1200);
+    } catch (error) {
+      console.error("Failed to save idea:", error);
+      // Still show success if it saved to localStorage
+      const updatedIdeas = [newIdea, ...ideas];
+      setIdeas(updatedIdeas);
+      localStorage.setItem("blueverra_ideas", JSON.stringify(updatedIdeas));
+      
+      setFormData({ name: "", title: "", description: "", isPrivate: false });
+      setIsSubmitting(false);
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 5000);
+    }
   };
 
   const [showAdminView, setShowAdminView] = useState(false);
@@ -207,7 +264,12 @@ export function IdeaCompetition() {
              </div>
              
              <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
-                {!showAdminView ? (
+                {isLoading ? (
+                  <div className="text-center py-20 bg-white/5 rounded-3xl border border-white/10 flex flex-col items-center gap-4">
+                    <RefreshCcw className="animate-spin text-[#5fa8d3]" size={32} />
+                    <p className="text-white/40 text-sm font-bold uppercase tracking-widest">Loading Wall...</p>
+                  </div>
+                ) : !showAdminView ? (
                   // Public View
                   ideas.filter(idea => !idea.isPrivate).length === 0 ? (
                     <div className="text-center py-12 bg-white/5 rounded-3xl border border-white/10">
