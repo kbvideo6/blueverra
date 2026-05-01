@@ -3,6 +3,7 @@ import { Manrope, Newsreader } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { FloatingLogo } from "@/components/FloatingLogo";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -40,6 +41,7 @@ export default function RootLayout({
             {children}
         </main>
         <Footer />
+        <FloatingLogo />
       </body>
     </html>
   );

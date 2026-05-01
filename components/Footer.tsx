@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export function Footer() {
   return (
@@ -14,6 +15,18 @@ export function Footer() {
           <div className="flex gap-6 uppercase text-[0.75rem] font-bold tracking-widest text-[#4d5b6a]">
              <Link href="/" className="hover:text-[#001736] transition-colors">Home</Link>
              <Link href="/take-action" className="hover:text-[#001736] transition-colors">Action</Link>
+          </div>
+        </div>
+
+        <div className="mt-12 py-8 border-t border-blue-950/5 flex flex-col items-center gap-4">
+          <span className="text-[0.65rem] uppercase tracking-[0.2em] font-black text-[#001736]/30">Official Partner</span>
+          <div className="relative w-[180px] h-[45px] grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500">
+            <Image 
+              src="/logos/leo-logo-v2.png" 
+              alt="Leos of Sri Lanka & Maldives" 
+              fill
+              className="object-contain"
+            />
           </div>
         </div>
         <div className="mt-12 pt-8 border-t border-blue-950/10 text-center text-[#4d5b6a] text-sm flex flex-col md:flex-row justify-between items-center gap-4">
